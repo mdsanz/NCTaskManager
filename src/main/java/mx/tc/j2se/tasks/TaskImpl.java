@@ -62,11 +62,9 @@ public class TaskImpl implements Task{
     @Override
     public void setTime(int time) {
         if (isRepeated()) {
-            this.time = time;
             repeated = false;
-        } else {
-            this.time = time;
         }
+            this.time = time;
     }
 
     @Override
@@ -108,20 +106,24 @@ public class TaskImpl implements Task{
 
     @Override
     public int nextTimeAfter (int current) {
-        if (isRepeated()) {
-            int timesExecuted = end/interval;
-            for (int i = 1; i <= timesExecuted; i++) {
-                if (current <= i*interval) {
-                    return i*interval;
+        if (isActive()) {
+            if (isRepeated()) {
+                int timesExecuted = (end - start) / interval;
+                for (int i = 0; i <= timesExecuted; i++) {
+                    if (current < (i * interval + start)) {
+                        return (i * interval + start);
+                    }
                 }
-            }
-            return -1;
-        } else {
-            if (current > time) {
                 return -1;
             } else {
-                return time;
+                if (current < time) {
+                    return time;
+                } else {
+                    return -1;
+                }
             }
+        } else {
+            return -1;
         }
     }
 }
