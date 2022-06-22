@@ -1,7 +1,7 @@
 package mx.tc.j2se.tasks;
 
 /**
- * Implementation of the task interface. It contains some text that describes the details of itself,
+ * Implementation of the Task interface. It contains some text that describes the details of itself,
  * and the time of execution.
  */
 public class TaskImpl implements Task{

@@ -1,7 +1,17 @@
 package mx.tc.j2se.tasks;
 
+/**
+ * Implementation of the ArrayTaskList interface. It contains an array with the tasks in there, and the size
+ * of this array.
+ */
 public class ArrayTaskListImpl implements ArrayTaskList {
+    /**
+     * Array with tasks in there.
+     */
     private Task[] taskList;
+    /**
+     * Length of the array.
+     */
     private int size;
 
     public ArrayTaskListImpl() {
@@ -52,4 +62,5 @@ public class ArrayTaskListImpl implements ArrayTaskList {
     public Task getTask(int index) {
         return taskList[index];
     }
+
 }
