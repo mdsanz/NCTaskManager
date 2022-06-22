@@ -1,22 +1,69 @@
 package mx.tc.j2se.tasks;
 
+/**
+ * Implementation of the task interface. It contains some text that describes the details of itself,
+ * and the time of execution.
+ */
 public class TaskImpl implements Task{
+
+    /**
+     * Describes the details of the task.
+     */
     private String title;
+
+    /**
+     * Shows the time of execution of the non-repetitive task.
+     */
     private int time;
+
+    /**
+     * Shows the star time of the repetitive task.
+     */
     private int start;
+
+    /**
+     * Shows the end time of the repetitive task.
+     */
     private int end;
+
+    /**
+     * Shows the time interval of the repetitive task.
+     */
     private int interval;
+
+    /**
+     * Shows if the task is active or not.
+     */
     private boolean active;
+
+    /**
+     * Shows if the task is repeated or not.
+     */
     private boolean repeated;
 
+    /**
+     * Constructor with no params of a general task.
+     */
     public TaskImpl() {
     }
 
+    /**
+     * Constructor of a non-repetitive task.
+     * @param title the description of the task.
+     * @param time the time of execution of the task.
+     */
     public TaskImpl(String title, int time) {
         this.title = title;
         this.time = time;
     }
 
+    /**
+     * Constructor of a repetitive task.
+     * @param title the description of the task.
+     * @param start the start time of the task.
+     * @param end the end time of the task.
+     * @param interval the time interval of the task.
+     */
     public TaskImpl(String title, int start, int end, int interval) {
         this.title = title;
         this.start = start;
@@ -65,6 +112,9 @@ public class TaskImpl implements Task{
             repeated = false;
         }
             this.time = time;
+            this.start = 0;
+            this.end = 0;
+            this.interval = 0;
     }
 
     @Override
@@ -102,6 +152,7 @@ public class TaskImpl implements Task{
             this.start = start;
             this.end = end;
             this.interval = interval;
+            this.time = 0;
     }
 
     @Override
