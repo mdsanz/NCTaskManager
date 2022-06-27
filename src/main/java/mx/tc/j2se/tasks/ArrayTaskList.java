@@ -31,4 +31,12 @@ public interface ArrayTaskList {
      * @return the task found in the given index.
      */
     Task getTask(int index);
+
+    /**
+     * Method to know which task of the list are scheduled at least once in a certain interval.
+     * @param from
+     * @param to
+     * @return
+     */
+    ArrayTaskList incoming(int from, int to);
 }
