@@ -1,6 +1,11 @@
 package mx.tc.j2se.evaluation;
 
 public class Evaluation1 {
+    /**
+     * Static method to know the index of the largest circle in a Circle array.
+     * @param arrayCircle It's an array which contains Circle objects.
+     * @return the index of the largest circle.
+     */
     public static int biggestCircle(Circle[] arrayCircle) {
         int index = -1, r = -1;
         for (int i = 0; i < arrayCircle.length; i++) {
@@ -14,6 +19,7 @@ public class Evaluation1 {
 
     public static void main(String[] args) {
         System.out.println("Evaluation 1");
+        System.out.println("============");
         try {
             Circle circle1 = new Circle(0);
         } catch (IllegalArgumentException err) {
