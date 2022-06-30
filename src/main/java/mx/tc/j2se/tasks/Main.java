@@ -25,7 +25,7 @@ public class Main {
 			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
 		}
 		System.out.println("====== IncomingTaskList ======");
-		LinkedTaskList incomingTask1 = taskList1.incoming(0, 5);
+		LinkedTaskList incomingTask1 = taskList1.incoming(-1, 5);
 		for (int i = 0; i < incomingTask1.size(); i++) {
 			System.out.println(incomingTask1.getTask(i).getTitle() + " " + incomingTask1.getTask(i).isRepeated());
 		}
