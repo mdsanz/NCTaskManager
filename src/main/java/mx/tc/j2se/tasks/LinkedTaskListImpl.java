@@ -23,35 +23,43 @@ public class LinkedTaskListImpl implements LinkedTaskList {
     }
 
     @Override
-    public void add(Task task) {
-        if (head == null) {
-            head = new Node(task);
+    public void add(Task task) throws IllegalArgumentException {
+        if (task == null) {
+            throw new IllegalArgumentException("You can not add null elements");
         } else {
-            Node n = head;
-            while (n.next != null) {
-                n = n.next;
+            if (head == null) {
+                head = new Node(task);
+            } else {
+                Node n = head;
+                while (n.next != null) {
+                    n = n.next;
+                }
+                n.next = new Node(task);
             }
-            n.next = new Node(task);
+            size++;
         }
-        size++;
     }
 
     @Override
-    public boolean remove(Task task) {
-       Node n = head;
-       boolean removed = false;
-       LinkedTaskListImpl linkedList = new LinkedTaskListImpl();
-       while (n != null) {
-           if (n.task == task) {
-               removed = true;
-           } else {
-               linkedList.add(n.task);
-           }
-           n = n.next;
-       }
-       head = linkedList.head;
-       size = linkedList.size;
-       return removed;
+    public boolean remove(Task task) throws IllegalArgumentException {
+        if (task == null) {
+            throw new IllegalArgumentException("You can not remove null elements");
+        } else {
+            Node n = head;
+            boolean removed = false;
+            LinkedTaskListImpl linkedList = new LinkedTaskListImpl();
+            while (n != null) {
+                if (n.task == task) {
+                    removed = true;
+                } else {
+                    linkedList.add(n.task);
+                }
+                n = n.next;
+            }
+            head = linkedList.head;
+            size = linkedList.size;
+            return removed;
+        }
     }
 
     @Override
@@ -78,6 +86,8 @@ public class LinkedTaskListImpl implements LinkedTaskList {
     public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
         if ((from < 0) || (to < 0)) {
             throw new IllegalArgumentException("The time cannot be negative");
+        } else if (from > to) {
+            throw new IllegalArgumentException("The start time cannot be higher than end time");
         } else {
             LinkedTaskListImpl incomingList = new LinkedTaskListImpl();
             Node n = head;

@@ -18,39 +18,46 @@ public class ArrayTaskListImpl implements ArrayTaskList {
     }
 
     @Override
-    public void add(Task task) {
-        Task[] taskList2 = new Task[size+1];
-        for (int i = 0; i < size; i++) {
-            taskList2[i] = taskList[i];
+    public void add(Task task) throws IllegalArgumentException {
+        if (task == null) {
+            throw new IllegalArgumentException("You can not add null elements");
+        } else {
+            Task[] taskList2 = new Task[size + 1];
+            for (int i = 0; i < size; i++) {
+                taskList2[i] = taskList[i];
+            }
+            taskList2[size] = task;
+            this.size++;
+            taskList = taskList2;
         }
-        taskList2[size] = task;
-        this.size++;
-        taskList = taskList2;
     }
 
     @Override
-    public boolean remove(Task task) {
-        int count = 0;
-        for (Task t : taskList) {
-            if (t == task) {
-                count++;
-            }
-        }
-        if (count == 0) {
-            return false;
+    public boolean remove(Task task) throws IllegalArgumentException {
+        if (task == null) {
+            throw new IllegalArgumentException("You can not remove null elements");
         } else {
-            Task[] taskList2 = new Task[size-count];
-            for (int i = 0, j = 0; i < size; i++) {
-                if (taskList[i] != task) {
-                    taskList2[j] = taskList[i];
-                    j++;
+            int count = 0;
+            for (Task t : taskList) {
+                if (t == task) {
+                    count++;
                 }
             }
-            size -= count;
-            taskList = taskList2;
-            return true;
+            if (count == 0) {
+                return false;
+            } else {
+                Task[] taskList2 = new Task[size - count];
+                for (int i = 0, j = 0; i < size; i++) {
+                    if (taskList[i] != task) {
+                        taskList2[j] = taskList[i];
+                        j++;
+                    }
+                }
+                size -= count;
+                taskList = taskList2;
+                return true;
+            }
         }
-
     }
 
     @Override
@@ -59,31 +66,41 @@ public class ArrayTaskListImpl implements ArrayTaskList {
     }
 
     @Override
-    public Task getTask(int index) {
-        return taskList[index];
+    public Task getTask(int index) throws IndexOutOfBoundsException {
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("The index cannot be equals or higher than the size list");
+        } else {
+            return taskList[index];
+        }
     }
 
     @Override
     public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskListImpl incomingList = new ArrayTaskListImpl();
-        for (Task t : taskList) {
-            if (t.isActive()) {
-                if (t.isRepeated()) {
-                    int timesExecuted = (t.getEndTime() - t.getStartTime()) / t.getRepeatInterval();
-                    for (int i = 0; i <= timesExecuted; i++) {
-                        if (((i * t.getRepeatInterval() + t.getStartTime()) > from) && ((i * t.getRepeatInterval() + t.getStartTime()) < to)) {
-                            incomingList.add(t);
-                            break;
+        if ((from < 0) || (to < 0)) {
+            throw new IllegalArgumentException("The time cannot be negative");
+        } else if (from > to) {
+            throw new IllegalArgumentException("The start time cannot be higher than end time");
+        } else {
+            ArrayTaskListImpl incomingList = new ArrayTaskListImpl();
+            for (Task t : taskList) {
+                if (t.isActive()) {
+                    if (t.isRepeated()) {
+                        int timesExecuted = (t.getEndTime() - t.getStartTime()) / t.getRepeatInterval();
+                        for (int i = 0; i <= timesExecuted; i++) {
+                            if (((i * t.getRepeatInterval() + t.getStartTime()) > from) && ((i * t.getRepeatInterval() + t.getStartTime()) < to)) {
+                                incomingList.add(t);
+                                break;
+                            }
                         }
-                    }
-                } else {
-                    if ((t.getTime() > from) && (t.getTime() < to)) {
-                        incomingList.add(t);
+                    } else {
+                        if ((t.getTime() > from) && (t.getTime() < to)) {
+                            incomingList.add(t);
+                        }
                     }
                 }
             }
+            return incomingList;
         }
-        return incomingList;
     }
 
 }

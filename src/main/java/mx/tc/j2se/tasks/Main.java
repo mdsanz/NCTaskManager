@@ -4,7 +4,7 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello Training Center!");
 		TaskImpl task1 = new TaskImpl("task1", 8);
-		TaskImpl task2 = new TaskImpl("task2", 2, 10, 2);
+		TaskImpl task2 = new TaskImpl("task2", 7, 10, 1);
 		TaskImpl task3 = new TaskImpl("task3", 1, 5, 1);
 		TaskImpl task4 = new TaskImpl("task4", 4);
 		task1.setActive(true);
@@ -25,7 +25,7 @@ public class Main {
 			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
 		}
 		System.out.println("====== IncomingTaskList ======");
-		LinkedTaskList incomingTask1 = taskList1.incoming(-1, 5);
+		LinkedTaskList incomingTask1 = taskList1.incoming(6, 5);
 		for (int i = 0; i < incomingTask1.size(); i++) {
 			System.out.println(incomingTask1.getTask(i).getTitle() + " " + incomingTask1.getTask(i).isRepeated());
 		}
