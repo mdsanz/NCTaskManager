@@ -11,6 +11,7 @@ public class LinkedTaskListImpl implements LinkedTaskList {
     }
 
     private Node head;
+    private Node queue;
     private int size;
 
     public LinkedTaskListImpl() {
@@ -19,6 +20,7 @@ public class LinkedTaskListImpl implements LinkedTaskList {
 
     public LinkedTaskListImpl(Node head) {
         this.head = head;
+        this.queue = head;
         this.size = 1;
     }
 
@@ -29,12 +31,10 @@ public class LinkedTaskListImpl implements LinkedTaskList {
         } else {
             if (head == null) {
                 head = new Node(task);
+                queue = head;
             } else {
-                Node n = head;
-                while (n.next != null) {
-                    n = n.next;
-                }
-                n.next = new Node(task);
+                queue.next = new Node(task);
+                queue = queue.next;
             }
             size++;
         }
@@ -58,6 +58,7 @@ public class LinkedTaskListImpl implements LinkedTaskList {
             }
             head = linkedList.head;
             size = linkedList.size;
+            queue = linkedList.queue;
             return removed;
         }
     }
@@ -90,24 +91,10 @@ public class LinkedTaskListImpl implements LinkedTaskList {
             throw new IllegalArgumentException("The start time cannot be higher than end time");
         } else {
             LinkedTaskListImpl incomingList = new LinkedTaskListImpl();
-            Node n = head;
-            while (n != null) {
-                if (n.task.isActive()) {
-                    if (n.task.isRepeated()) {
-                        int timesExecuted = (n.task.getEndTime() - n.task.getStartTime()) / n.task.getRepeatInterval();
-                        for (int i = 0; i <= timesExecuted; i++) {
-                            if (((i * n.task.getRepeatInterval() + n.task.getStartTime()) > from) && ((i * n.task.getRepeatInterval() + n.task.getStartTime()) < to)) {
-                                incomingList.add(n.task);
-                                break;
-                            }
-                        }
-                    } else {
-                        if ((n.task.getTime() > from) && (n.task.getTime() < to)) {
-                            incomingList.add(n.task);
-                        }
-                    }
+            for (int i = 0; i < size; i++) {
+                if ((getTask(i).nextTimeAfter(from) > 0) && (getTask(i).nextTimeAfter(from) < to)) {
+                    incomingList.add(getTask(i));
                 }
-                n = n.next;
             }
             return incomingList;
         }

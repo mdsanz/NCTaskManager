@@ -82,21 +82,9 @@ public class ArrayTaskListImpl implements ArrayTaskList {
             throw new IllegalArgumentException("The start time cannot be higher than end time");
         } else {
             ArrayTaskListImpl incomingList = new ArrayTaskListImpl();
-            for (Task t : taskList) {
-                if (t.isActive()) {
-                    if (t.isRepeated()) {
-                        int timesExecuted = (t.getEndTime() - t.getStartTime()) / t.getRepeatInterval();
-                        for (int i = 0; i <= timesExecuted; i++) {
-                            if (((i * t.getRepeatInterval() + t.getStartTime()) > from) && ((i * t.getRepeatInterval() + t.getStartTime()) < to)) {
-                                incomingList.add(t);
-                                break;
-                            }
-                        }
-                    } else {
-                        if ((t.getTime() > from) && (t.getTime() < to)) {
-                            incomingList.add(t);
-                        }
-                    }
+            for (int i = 0; i < size; i++) {
+                if ((getTask(i).nextTimeAfter(from) > 0) && (getTask(i).nextTimeAfter(from) < to)) {
+                    incomingList.add(getTask(i));
                 }
             }
             return incomingList;

@@ -11,7 +11,7 @@ public class Main {
 		task2.setActive(true);
 		task3.setActive(true);
 		task4.setActive(true);
-		LinkedTaskListImpl taskList1 = new LinkedTaskListImpl();
+		ArrayTaskListImpl taskList1 = new ArrayTaskListImpl();
 		taskList1.add(task1);
 		taskList1.add(task2);
 		taskList1.add(task3);
@@ -25,11 +25,11 @@ public class Main {
 			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
 		}
 		System.out.println("====== IncomingTaskList ======");
-		LinkedTaskList incomingTask1 = taskList1.incoming(6, 5);
+		ArrayTaskList incomingTask1 = taskList1.incoming(0, 5);
 		for (int i = 0; i < incomingTask1.size(); i++) {
 			System.out.println(incomingTask1.getTask(i).getTitle() + " " + incomingTask1.getTask(i).isRepeated());
 		}
-		System.out.println(taskList1.getTask(2).getTitle());
+		System.out.println(taskList1.getTask(0).getTitle());
 	}
 }
 

@@ -67,6 +67,8 @@ public class TaskImpl implements Task{
      * @param start the start time of the task.
      * @param end the end time of the task.
      * @param interval the time interval of the task.
+     * @throws IllegalArgumentException when the time is negative, the start time is higher than
+     * the end time, or the time interval is smaller than zero.
      */
     public TaskImpl(String title, int start, int end, int interval) throws IllegalArgumentException {
         if ((start < 0) || (end < 0)) {
@@ -181,8 +183,8 @@ public class TaskImpl implements Task{
 
     @Override
     public int nextTimeAfter (int current) throws IllegalArgumentException {
-        if (current <= 0) {
-            throw new IllegalArgumentException("The current time must be higher than zero");
+        if (current < 0) {
+            throw new IllegalArgumentException("The current time cannot be negative");
         } else {
             if (isActive()) {
                 if (isRepeated()) {
