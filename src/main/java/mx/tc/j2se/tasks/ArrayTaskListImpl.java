@@ -4,7 +4,7 @@ package mx.tc.j2se.tasks;
  * Implementation of the ArrayTaskList interface. It contains an array with the tasks in there, and the size
  * of this array.
  */
-public class ArrayTaskListImpl implements ArrayTaskList {
+public class ArrayTaskListImpl extends AbstractTaskList {
     /**
      * Array with tasks in there.
      */
@@ -15,6 +15,7 @@ public class ArrayTaskListImpl implements ArrayTaskList {
     private int size;
 
     public ArrayTaskListImpl() {
+        super();
     }
 
     @Override
@@ -71,23 +72,6 @@ public class ArrayTaskListImpl implements ArrayTaskList {
             throw new IndexOutOfBoundsException("The index cannot be equals or higher than the size list");
         } else {
             return taskList[index];
-        }
-    }
-
-    @Override
-    public ArrayTaskList incoming(int from, int to) {
-        if ((from < 0) || (to < 0)) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else if (from > to) {
-            throw new IllegalArgumentException("The start time cannot be higher than end time");
-        } else {
-            ArrayTaskListImpl incomingList = new ArrayTaskListImpl();
-            for (int i = 0; i < size; i++) {
-                if ((getTask(i).nextTimeAfter(from) > 0) && (getTask(i).nextTimeAfter(from) < to)) {
-                    incomingList.add(getTask(i));
-                }
-            }
-            return incomingList;
         }
     }
 
