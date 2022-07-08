@@ -11,7 +11,7 @@ public class Main {
 		task2.setActive(true);
 		task3.setActive(true);
 		task4.setActive(true);
-		AbstractTaskList taskList1 = new LinkedTaskListImpl();
+		AbstractTaskList taskList1 = TaskListFactory.createTaskList(ListTypes.types.LINKED);
 		taskList1.add(task1);
 		taskList1.add(task2);
 		taskList1.add(task3);
