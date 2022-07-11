@@ -1,5 +1,8 @@
 package mx.tc.j2se.tasks;
 
+
+import java.util.Iterator;
+
 /**
  * Implementation of the ArrayTaskList interface. It contains an array with the tasks in there, and the size
  * of this array.
@@ -16,6 +19,11 @@ public class ArrayTaskListImpl extends AbstractTaskList {
 
     public ArrayTaskListImpl() {
         super();
+    }
+
+    public ArrayTaskListImpl(Task[] taskList, int size) {
+        this.taskList = taskList;
+        this.size = size;
     }
 
     @Override
@@ -75,4 +83,8 @@ public class ArrayTaskListImpl extends AbstractTaskList {
         }
     }
 
+    @Override
+    public Iterator<Task> iterator() {
+        return new AbstractTaskList.TaskListIterator(new ArrayTaskListImpl(taskList, size));
+    }
 }

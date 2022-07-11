@@ -1,6 +1,14 @@
 package mx.tc.j2se.tasks;
 
+
+import java.util.Iterator;
+
 public class LinkedTaskListImpl extends AbstractTaskList {
+    @Override
+    public Iterator<Task> iterator() {
+        return new AbstractTaskList.TaskListIterator(new LinkedTaskListImpl(head, size, queue));
+    }
+
     private class Node {
         Task task;
         Node next;
@@ -16,6 +24,12 @@ public class LinkedTaskListImpl extends AbstractTaskList {
 
     public LinkedTaskListImpl() {
         super();
+    }
+
+    public LinkedTaskListImpl(Node head, int size, Node queue) {
+        this.head = head;
+        this.size = size;
+        this.queue = queue;
     }
 
     @Override
@@ -76,7 +90,5 @@ public class LinkedTaskListImpl extends AbstractTaskList {
             return n.task;
         }
     }
-
-
 
 }

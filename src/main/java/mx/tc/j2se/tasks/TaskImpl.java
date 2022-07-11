@@ -1,5 +1,7 @@
 package mx.tc.j2se.tasks;
 
+import java.util.Objects;
+
 /**
  * Implementation of the Task interface. It contains some text that describes the details of itself,
  * and the time of execution.
@@ -206,5 +208,18 @@ public class TaskImpl implements Task{
                 return -1;
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskImpl task = (TaskImpl) o;
+        return time == task.time && start == task.start && end == task.end && interval == task.interval && repeated == task.repeated && title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval, repeated);
     }
 }

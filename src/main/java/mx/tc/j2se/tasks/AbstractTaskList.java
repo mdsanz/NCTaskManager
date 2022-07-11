@@ -1,7 +1,43 @@
 package mx.tc.j2se.tasks;
 
-public abstract class AbstractTaskList {
+import java.util.Iterator;
+
+public abstract class AbstractTaskList implements Iterable<Task> {
+
     public AbstractTaskList() {
+
+    }
+
+    public class TaskListIterator implements Iterator<Task> {
+
+        int position;
+        Task task;
+        AbstractTaskList list;
+       TaskListIterator(AbstractTaskList list) {
+            position = -1;
+            this.list = list;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return (position + 1) < list.size();
+        }
+
+        @Override
+        public Task next() throws IndexOutOfBoundsException {
+            if (hasNext()) {
+                position++;
+                task = list.getTask(position);
+                return task;
+            } else {
+                throw new IndexOutOfBoundsException("There's no more tasks in the list");
+            }
+        }
+
+        @Override
+        public void remove() {
+
+        }
 
     }
 
@@ -18,7 +54,8 @@ public abstract class AbstractTaskList {
             AbstractTaskList incomingList;
             if (getClass().equals(ArrayTaskListImpl.class)) {
                 incomingList = new ArrayTaskListImpl();
-            } else {
+            }
+            else {
                 incomingList = new LinkedTaskListImpl();
             }
             for (int i = 0; i < size(); i++)
@@ -28,5 +65,6 @@ public abstract class AbstractTaskList {
             return incomingList;
         }
     }
+
 
 }

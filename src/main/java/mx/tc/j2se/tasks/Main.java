@@ -1,5 +1,8 @@
 package mx.tc.j2se.tasks;
 
+import java.util.Iterator;
+
+
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello Training Center!");
@@ -16,10 +19,11 @@ public class Main {
 		taskList1.add(task2);
 		taskList1.add(task3);
 		taskList1.add(task4);
+		taskList1.add(task3);
 		for (int i = 0; i <taskList1.size(); i++) {
 			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
 		}
-		System.out.println("Removing task =======");
+		/*System.out.println("Removing task =======");
 		//taskList1.remove(task1);
 		for (int i = 0; i < taskList1.size(); i++) {
 			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
@@ -29,7 +33,19 @@ public class Main {
 		for (int i = 0; i < incomingTask1.size(); i++) {
 			System.out.println(incomingTask1.getTask(i).getTitle() + " " + incomingTask1.getTask(i).isRepeated());
 		}
-		System.out.println(incomingTask1.size());
+		System.out.println(incomingTask1.size());*/
+		System.out.println("Iterator ======");
+		Iterator<Task> it = taskList1.iterator();
+		while (it.hasNext()) {
+			Task uno = it.next();
+			if (uno.equals(task3)) {
+				it.remove();
+			} else {
+				System.out.println(uno.getTitle());
+			}
+		}
+
+
 	}
 }
 
