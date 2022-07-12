@@ -222,4 +222,13 @@ public class TaskImpl implements Task{
     public int hashCode() {
         return Objects.hash(title, time, start, end, interval, repeated);
     }
+
+    public String toString() {
+        if (isRepeated()) {
+            return "[title = " + title + ", start = " + start + ", end = " + end + ", interval = " +
+            interval + ", active = " + active + ", repeated = " + repeated + "]";
+        } else {
+            return "[title = " + title + ", time = " + time + ", active = " + active + ", repeated = " + repeated + "]";
+        }
+    }
 }

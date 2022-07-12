@@ -1,7 +1,9 @@
 package mx.tc.j2se.tasks;
 
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * Implementation of the ArrayTaskList interface. It contains an array with the tasks in there, and the size
@@ -86,5 +88,32 @@ public class ArrayTaskListImpl extends AbstractTaskList {
     @Override
     public Iterator<Task> iterator() {
         return new AbstractTaskList.TaskListIterator(new ArrayTaskListImpl(taskList, size));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayTaskListImpl taskList1 = (ArrayTaskListImpl) o;
+        return size == taskList1.size && Arrays.equals(taskList, taskList1.taskList);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size);
+        result = 31 * result + Arrays.hashCode(taskList);
+        return result;
+    }
+    @Override
+    public String toString() {
+        StringBuilder list = new StringBuilder("(");
+        for(int i = 0; i < size; i++) {
+            if (i == size -1) {
+                list.append("Task ").append(i + 1).append(" = ").append(taskList[i].toString()).append(")");
+            } else {
+                list.append("Task ").append(i + 1).append(" = ").append(taskList[i].toString()).append(",\n");
+            }
+        }
+        return list.toString();
     }
 }

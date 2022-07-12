@@ -45,6 +45,7 @@ public abstract class AbstractTaskList implements Iterable<Task> {
     public abstract boolean remove(Task task) throws IllegalArgumentException;
     public abstract int size();
     public abstract Task getTask(int index) throws IndexOutOfBoundsException;
+    public abstract String toString();
     public AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
         if ((from < 0) || (to < 0)) {
             throw new IllegalArgumentException("The time cannot be negative");

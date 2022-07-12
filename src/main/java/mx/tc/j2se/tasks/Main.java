@@ -20,9 +20,10 @@ public class Main {
 		taskList1.add(task3);
 		taskList1.add(task4);
 		taskList1.add(task3);
-		for (int i = 0; i <taskList1.size(); i++) {
-			System.out.println(taskList1.getTask(i).getTitle() + " " + taskList1.getTask(i).isRepeated());
-		}
+		/*for (int i = 0; i <taskList1.size(); i++) {
+			System.out.println(taskList1.getTask(i).toString());
+		}*/
+		System.out.println(taskList1);
 		/*System.out.println("Removing task =======");
 		//taskList1.remove(task1);
 		for (int i = 0; i < taskList1.size(); i++) {
@@ -44,7 +45,8 @@ public class Main {
 				System.out.println(uno.getTitle());
 			}
 		}
-
+		System.out.println("HashCode =====");
+		System.out.println(task1.hashCode());
 
 	}
 }

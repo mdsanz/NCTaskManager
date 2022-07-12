@@ -2,6 +2,7 @@ package mx.tc.j2se.tasks;
 
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class LinkedTaskListImpl extends AbstractTaskList {
     @Override
@@ -91,4 +92,32 @@ public class LinkedTaskListImpl extends AbstractTaskList {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LinkedTaskListImpl tasks = (LinkedTaskListImpl) o;
+        return size == tasks.size && Objects.equals(head, tasks.head) && Objects.equals(queue, tasks.queue);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, queue, size);
+    }
+
+    public String toString() {
+        StringBuilder list = new StringBuilder();
+        Node n = head;
+        int count = 0;
+        while (n != null) {
+            count++;
+            if (n.next == null) {
+                list.append("Task ").append(count).append(" = ").append(n.task.toString());
+            } else {
+                list.append("Task ").append(count).append(" = ").append(n.task.toString()).append(" ->\n");
+            }
+            n = n.next;
+        }
+        return list.toString();
+    }
 }
