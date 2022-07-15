@@ -21,7 +21,7 @@ public interface ArrayTaskList {
 
     /**
      * Method to know the length of the task list.
-     * @return the length of the array.
+     * @return the length of the list.
      */
     int size();
 
@@ -32,11 +32,6 @@ public interface ArrayTaskList {
      */
     Task getTask(int index);
 
-    /**
-     * Method to know which task of the list are scheduled at least once in a certain interval.
-     * @param from
-     * @param to
-     * @return
-     */
+
     ArrayTaskList incoming(int from, int to);
 }

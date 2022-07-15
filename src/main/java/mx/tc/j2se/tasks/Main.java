@@ -1,6 +1,8 @@
 package mx.tc.j2se.tasks;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 public class Main {
@@ -37,17 +39,24 @@ public class Main {
 		System.out.println(incomingTask1.size());*/
 		System.out.println("Iterator ======");
 		Iterator<Task> it = taskList1.iterator();
-		while (it.hasNext()) {
-			Task uno = it.next();
-			if (uno.equals(task3)) {
-				it.remove();
-			} else {
-				System.out.println(uno.getTitle());
-			}
-		}
-		System.out.println("HashCode =====");
-		System.out.println(task1.hashCode());
+		it.next();
+		it.remove();
+		System.out.println(taskList1);
 
+		System.out.println("Now with ArrayTaskList ======");
+		LinkedList<Task> taskList2 = new LinkedList<Task>();
+		taskList2.add(task1);
+		taskList2.add(task2);
+		taskList2.add(task3);
+		taskList2.add(task4);
+		taskList2.add(task3);
+		Iterator<Task> it2 = taskList2.iterator();
+		it2.next();
+		it2.remove();
+		System.out.println(taskList2);
+		it2.next();
+		it2.remove();
+		System.out.println(taskList2);
 	}
 }
 

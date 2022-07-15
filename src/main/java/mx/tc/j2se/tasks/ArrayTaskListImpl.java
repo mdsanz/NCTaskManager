@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
- * Implementation of the ArrayTaskList interface. It contains an array with the tasks in there, and the size
- * of this array.
+ * Extension of the AbstractTaskList abstract class. It represents a list of tasks like an array and
+ * contains an array with the tasks in there, and the size of this array.
  */
 public class ArrayTaskListImpl extends AbstractTaskList {
     /**
@@ -19,13 +19,20 @@ public class ArrayTaskListImpl extends AbstractTaskList {
      */
     private int size;
 
+    /**
+     * Constructs an empty array task list.
+     */
     public ArrayTaskListImpl() {
         super();
     }
 
-    public ArrayTaskListImpl(Task[] taskList, int size) {
+    /**
+     * Constructs an array task list using like parameter the array list.
+     * @param taskList is the array list.
+     */
+    public ArrayTaskListImpl(Task[] taskList) {
         this.taskList = taskList;
-        this.size = size;
+        size = taskList.length;
     }
 
     @Override
@@ -87,7 +94,52 @@ public class ArrayTaskListImpl extends AbstractTaskList {
 
     @Override
     public Iterator<Task> iterator() {
-        return new AbstractTaskList.TaskListIterator(new ArrayTaskListImpl(taskList, size));
+        class TaskListIterator implements Iterator<Task> {
+
+            int position;
+            Task task;
+
+            TaskListIterator() {
+                position = -1;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return (position + 1) < size;
+            }
+
+            @Override
+            public Task next() throws IndexOutOfBoundsException {
+                if (hasNext()) {
+                    position++;
+                    task = getTask(position);
+                    return task;
+                } else {
+                    throw new IndexOutOfBoundsException("There's no more tasks in the list");
+                }
+            }
+
+            @Override
+            public void remove() {
+                ArrayTaskListImpl list = new ArrayTaskListImpl();
+                boolean founded = false;
+                for (int i = 0; i < size; i++) {
+                    if (founded) {
+                        list.add(getTask(i));
+                    } else {
+                        if (getTask(i) == task) {
+                            founded = true;
+                        } else {
+                            list.add(getTask(i));
+                        }
+                    }
+                }
+                taskList = list.taskList;
+                size = list.size;
+                position--;
+            }
+        }
+        return new TaskListIterator();
     }
 
     @Override

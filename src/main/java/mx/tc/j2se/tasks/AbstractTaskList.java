@@ -1,6 +1,5 @@
 package mx.tc.j2se.tasks;
 
-import java.util.Iterator;
 
 public abstract class AbstractTaskList implements Iterable<Task> {
 
@@ -8,42 +7,35 @@ public abstract class AbstractTaskList implements Iterable<Task> {
 
     }
 
-    public class TaskListIterator implements Iterator<Task> {
 
-        int position;
-        Task task;
-        AbstractTaskList list;
-       TaskListIterator(AbstractTaskList list) {
-            position = -1;
-            this.list = list;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return (position + 1) < list.size();
-        }
-
-        @Override
-        public Task next() throws IndexOutOfBoundsException {
-            if (hasNext()) {
-                position++;
-                task = list.getTask(position);
-                return task;
-            } else {
-                throw new IndexOutOfBoundsException("There's no more tasks in the list");
-            }
-        }
-
-        @Override
-        public void remove() {
-
-        }
-
-    }
-
+    /**
+     * Method to add a task in the list.
+     * @param task the task you want to add.
+     * @throws IllegalArgumentException when the task you want to add is null.
+     */
     public abstract void add(Task task) throws IllegalArgumentException;
+
+     /**
+     * Method to remove a task from the list.
+     * @param task the task you want to remove. If the list contains the same task several times, any of them
+     * will be removed.
+     * @return true if the task was in the list, otherwise it returns false.
+     * @throws IllegalArgumentException when the task you want to remove is null.
+     */
     public abstract boolean remove(Task task) throws IllegalArgumentException;
+
+    /**
+     * Method to know the length of the task list.
+     * @return the length of the list.
+     */
     public abstract int size();
+
+    /**
+     * Method to get a specific task of the list.
+     * @param index the array index where the task is located.
+     * @return the task found in the given index.
+     * @throws IndexOutOfBoundsException when you try to access to an index that does not exist.
+     */
     public abstract Task getTask(int index) throws IndexOutOfBoundsException;
     public abstract String toString();
     public AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {

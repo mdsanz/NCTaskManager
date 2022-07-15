@@ -7,7 +7,53 @@ import java.util.Objects;
 public class LinkedTaskListImpl extends AbstractTaskList {
     @Override
     public Iterator<Task> iterator() {
-        return new AbstractTaskList.TaskListIterator(new LinkedTaskListImpl(head, size, queue));
+        class LinkedListIterator implements Iterator<Task> {
+
+            int position;
+            Task task;
+
+            LinkedListIterator() {
+                position = -1;
+            }
+
+            @Override
+            public boolean hasNext() {
+                return (position + 1) < size;
+            }
+
+            @Override
+            public Task next() throws IndexOutOfBoundsException {
+                if (hasNext()) {
+                    position++;
+                    task = getTask(position);
+                    return task;
+                } else {
+                    throw new IndexOutOfBoundsException("There's no more tasks in the list");
+                }
+            }
+
+            @Override
+            public void remove() {
+                LinkedTaskListImpl list = new LinkedTaskListImpl();
+                boolean founded = false;
+                for (int i = 0; i < size; i++) {
+                    if (founded) {
+                        list.add(getTask(i));
+                    } else {
+                        if (getTask(i) == task) {
+                            founded = true;
+                        } else {
+                            list.add(getTask(i));
+                        }
+                    }
+                }
+                head = list.head;
+                queue = list.queue;
+                size = list.size;
+                position--;
+            }
+        }
+        return new LinkedListIterator();
     }
 
     private class Node {

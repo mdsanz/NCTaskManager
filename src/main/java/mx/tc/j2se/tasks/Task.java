@@ -87,4 +87,5 @@ public interface Task {
      * returns -1, too.
      */
     int nextTimeAfter(int current);
+
 }
