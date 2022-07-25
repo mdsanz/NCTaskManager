@@ -1,7 +1,9 @@
 package mx.tc.j2se.tasks;
 
 
-public abstract class AbstractTaskList implements Iterable<Task> {
+import java.util.stream.Stream;
+
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
     public AbstractTaskList() {
 
@@ -38,26 +40,13 @@ public abstract class AbstractTaskList implements Iterable<Task> {
      */
     public abstract Task getTask(int index) throws IndexOutOfBoundsException;
     public abstract String toString();
-    public AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if ((from < 0) || (to < 0)) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else if (from > to) {
-            throw new IllegalArgumentException("The start time cannot be higher than end time");
-        } else {
-            AbstractTaskList incomingList;
-            if (getClass().equals(ArrayTaskListImpl.class)) {
-                incomingList = new ArrayTaskListImpl();
-            }
-            else {
-                incomingList = new LinkedTaskListImpl();
-            }
-            for (int i = 0; i < size(); i++)
-                if ((getTask(i).nextTimeAfter(from) > 0) && (getTask(i).nextTimeAfter(from) < to)) {
-                    incomingList.add(getTask(i));
-                }
-            return incomingList;
+    public abstract Stream<Task> getStream();
+    @Override
+    public AbstractTaskList clone() {
+        try {
+            return (AbstractTaskList) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
         }
     }
-
-
 }

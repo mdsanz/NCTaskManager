@@ -3,6 +3,7 @@ package mx.tc.j2se.tasks;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class LinkedTaskListImpl extends AbstractTaskList {
     @Override
@@ -56,7 +57,21 @@ public class LinkedTaskListImpl extends AbstractTaskList {
         return new LinkedListIterator();
     }
 
+
     private class Node {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Node)) return false;
+            Node node = (Node) o;
+            return task.equals(node.task) && next.equals(node.next);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(task, next);
+        }
+
         Task task;
         Node next;
 
@@ -141,9 +156,9 @@ public class LinkedTaskListImpl extends AbstractTaskList {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof LinkedTaskListImpl)) return false;
         LinkedTaskListImpl tasks = (LinkedTaskListImpl) o;
-        return size == tasks.size && Objects.equals(head, tasks.head) && Objects.equals(queue, tasks.queue);
+        return size == tasks.size && head.equals(tasks.head) && queue.equals(tasks.queue);
     }
 
     @Override
@@ -157,13 +172,29 @@ public class LinkedTaskListImpl extends AbstractTaskList {
         int count = 0;
         while (n != null) {
             count++;
-            if (n.next == null) {
-                list.append("Task ").append(count).append(" = ").append(n.task.toString());
-            } else {
-                list.append("Task ").append(count).append(" = ").append(n.task.toString()).append(" ->\n");
+            list.append("Task ").append(count).append(" = ").append(n.task.toString());
+            if (n.next != null) {
+                list.append(" ->\n");
             }
             n = n.next;
         }
         return list.toString();
     }
+
+    @Override
+    public Stream<Task> getStream(){
+        if (size == 0) {
+            throw new RuntimeException();
+        } else {
+            Stream.Builder<Task> streamBuilder = Stream.builder();
+
+            for (Task task : this) {
+                streamBuilder.accept(task);
+            }
+
+            return streamBuilder.build();
+        }
+
+    }
+
 }

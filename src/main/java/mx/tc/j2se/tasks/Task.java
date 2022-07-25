@@ -1,5 +1,7 @@
 package mx.tc.j2se.tasks;
 
+import java.time.LocalDateTime;
+
 /**
  * Interface that represents a real task.
  * @author Marcos Sánchez
@@ -31,46 +33,51 @@ public interface Task {
 
     /**
      * Method to know what time a task is going to start.
+     *
      * @return the time that the task starts. If the task is a repetitive one, then the method
      * returns the start time of the repetition.
      */
-    int getTime();
+    LocalDateTime getTime();
 
     /**
      * Method to insert or modify the execution time of a non-repetitive task. If the task is a repetitive
      * one, then it becomes non-repetitive.
      * @param time the new time of execution of the task.
      */
-    void setTime(int time);
+    void setTime(LocalDateTime time);
 
     /**
      * Method to know the start of a repetitive task.
+     *
      * @return the start time of the task. If the task is a non-repetitive one, then it returns the
      * time of execution.
      */
-    int getStartTime();
+    LocalDateTime getStartTime();
 
     /**
      * Method to know the end of a repetitive task.
+     *
      * @return the end time of the task. If the task is a non-repetitive one, then it returns the time
      * of execution.
      */
-    int getEndTime();
+    LocalDateTime getEndTime();
 
     /**
      * Method to know the time interval in which a repetitive task is executed.
+     *
      * @return the time interval of the task. If the task is a non-repetitive one, then it returns 0.
      */
-    int getRepeatInterval();
+    long getRepeatInterval();
 
     /**
      * Method to insert or modify the start, end and interval of a repetitive task. If the task is a
      * non-repetitive one, then it becomes repetitive.
-     * @param start the new start time of the task.
-     * @param end the new end time of the task.
+     *
+     * @param start    the new start time of the task.
+     * @param end      the new end time of the task.
      * @param interval the new time interval of the task.
      */
-    void setTime(int start, int end, int interval);
+    void setTime(LocalDateTime start, LocalDateTime end, long interval) throws IllegalArgumentException;
 
     /**
      * Method to know if a task is a repetitive one or not.
@@ -80,12 +87,13 @@ public interface Task {
 
     /**
      * Method to know the next start time of the task execution after a current time.
+     *
      * @param current the current time.
      * @return the time of execution after the current time if the task is non-repetitive and active. If the task is active
      * and repetitive, then it returns the next start time after the current time. If after the current
      * the task is not executed anymore, then it returns -1. If the task is not active, then it
      * returns -1, too.
      */
-    int nextTimeAfter(int current);
+    LocalDateTime nextTimeAfter(LocalDateTime current);
 
 }

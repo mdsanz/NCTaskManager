@@ -1,9 +1,8 @@
 package mx.tc.j2se.tasks;
 
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * Extension of the AbstractTaskList abstract class. It represents a list of tasks like an array and
@@ -160,12 +159,19 @@ public class ArrayTaskListImpl extends AbstractTaskList {
     public String toString() {
         StringBuilder list = new StringBuilder("(");
         for(int i = 0; i < size; i++) {
+            list.append("Task ").append(i + 1).append(" = ").append(taskList[i].toString());
             if (i == size -1) {
-                list.append("Task ").append(i + 1).append(" = ").append(taskList[i].toString()).append(")");
+                list.append(")");
             } else {
-                list.append("Task ").append(i + 1).append(" = ").append(taskList[i].toString()).append(",\n");
+                list.append(",\n");
             }
         }
         return list.toString();
     }
+
+    @Override
+    public Stream<Task> getStream() {
+        return Stream.of(taskList);
+    }
+
 }

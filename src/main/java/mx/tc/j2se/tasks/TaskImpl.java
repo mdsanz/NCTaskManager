@@ -1,12 +1,14 @@
 package mx.tc.j2se.tasks;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
  * Implementation of the Task interface. It contains some text that describes the details of itself,
  * and the time of execution.
  */
-public class TaskImpl implements Task{
+public class TaskImpl implements Task, Cloneable {
 
     /**
      * Describes the details of the task.
@@ -16,22 +18,22 @@ public class TaskImpl implements Task{
     /**
      * Shows the time of execution of the non-repetitive task.
      */
-    private int time;
+    private LocalDateTime time;
 
     /**
      * Shows the star time of the repetitive task.
      */
-    private int start;
+    private LocalDateTime start;
 
     /**
      * Shows the end time of the repetitive task.
      */
-    private int end;
+    private LocalDateTime end;
 
     /**
      * Shows the time interval of the repetitive task.
      */
-    private int interval;
+    private long interval;
 
     /**
      * Shows if the task is active or not.
@@ -54,13 +56,11 @@ public class TaskImpl implements Task{
      * @param title the description of the task.
      * @param time the time of execution of the task.
      */
-    public TaskImpl(String title, int time) throws IllegalArgumentException {
-        if (time < 0) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else {
+    public TaskImpl(String title, LocalDateTime time) {
+
             this.title = title;
             this.time = time;
-        }
+
     }
 
     /**
@@ -72,20 +72,14 @@ public class TaskImpl implements Task{
      * @throws IllegalArgumentException when the time is negative, the start time is higher than
      * the end time, or the time interval is smaller than zero.
      */
-    public TaskImpl(String title, int start, int end, int interval) throws IllegalArgumentException {
-        if ((start < 0) || (end < 0)) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else if (start > end) {
-            throw new IllegalArgumentException("The start time cannot be higher than end time");
-        } else if (interval <= 0) {
-            throw new IllegalArgumentException("The time interval must be higher than zero");
-        } else {
+    public TaskImpl(String title, LocalDateTime start, LocalDateTime end, long interval) {
+
             this.title = title;
             this.start = start;
             this.end = end;
             this.interval = interval;
             this.repeated = true;
-        }
+
     }
 
     @Override
@@ -114,7 +108,37 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public int getTime() {
+    public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        if (current == null) {
+            throw new IllegalArgumentException("The current time cannot be null");
+        } else {
+            if (isActive()) {
+                if (isRepeated()) {
+                    if(current.isAfter(end)) {
+                        return LocalDateTime.MIN;
+                    } else {
+                        for(LocalDateTime i=getStartTime(); i.isBefore(getEndTime()) || i.isEqual(getEndTime()); i = i.plus(this.interval, ChronoUnit.HOURS)) {
+                            if(i.isAfter(current)){
+                                return i;
+                            }
+                        }
+                        return LocalDateTime.MIN;
+                    }
+                } else {
+                    if (current.isBefore(time)) {
+                        return time;
+                    } else {
+                        return LocalDateTime.MIN;
+                    }
+                }
+            } else {
+                return LocalDateTime.MIN;
+            }
+        }
+    }
+
+    @Override
+    public LocalDateTime getTime() {
         if (isRepeated()) {
             return start;
         } else {
@@ -123,22 +147,20 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public void setTime(int time) throws IllegalArgumentException {
-        if (time < 0) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else {
+    public void setTime(LocalDateTime time) {
+
             if (isRepeated()) {
                 repeated = false;
             }
             this.time = time;
-            this.start = 0;
-            this.end = 0;
+            this.start = null;
+            this.end = null;
             this.interval = 0;
-        }
+
     }
 
     @Override
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         if (isRepeated()) {
             return start;
         } else {
@@ -147,7 +169,7 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public int getEndTime() {
+    public LocalDateTime getEndTime() {
         if (isRepeated()) {
             return end;
         } else {
@@ -156,7 +178,7 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public int getRepeatInterval() {
+    public long getRepeatInterval() {
         if (isRepeated()) {
             return interval;
         } else {
@@ -165,13 +187,12 @@ public class TaskImpl implements Task{
     }
 
     @Override
-    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
-        if ((start < 0) || (end < 0)) {
-            throw new IllegalArgumentException("The time cannot be negative");
-        } else if (start > end) {
+    public void setTime(LocalDateTime start, LocalDateTime end, long interval) throws IllegalArgumentException {
+    if (interval < 0) {
+        throw new IllegalArgumentException("The time cannot be negative");
+    }
+        else if (start.isAfter(end)) {
             throw new IllegalArgumentException("The start time cannot be higher than end time");
-        } else if (interval <= 0) {
-            throw new IllegalArgumentException("The time interval must be higher than zero");
         } else {
             if (!isRepeated()) {
                 repeated = true;
@@ -179,36 +200,13 @@ public class TaskImpl implements Task{
             this.start = start;
             this.end = end;
             this.interval = interval;
-            this.time = 0;
+            this.time = null;
         }
     }
 
-    @Override
-    public int nextTimeAfter (int current) throws IllegalArgumentException {
-        if (current < 0) {
-            throw new IllegalArgumentException("The current time cannot be negative");
-        } else {
-            if (isActive()) {
-                if (isRepeated()) {
-                    int timesExecuted = (end - start) / interval;
-                    for (int i = 0; i <= timesExecuted; i++) {
-                        if (current < (i * interval + start)) {
-                            return (i * interval + start);
-                        }
-                    }
-                    return -1;
-                } else {
-                    if (current < time) {
-                        return time;
-                    } else {
-                        return -1;
-                    }
-                }
-            } else {
-                return -1;
-            }
-        }
-    }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -229,6 +227,16 @@ public class TaskImpl implements Task{
             interval + ", active = " + active + ", repeated = " + repeated + "]";
         } else {
             return "[title = " + title + ", time = " + time + ", active = " + active + ", repeated = " + repeated + "]";
+        }
+    }
+
+    @Override
+    public TaskImpl clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (TaskImpl) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
         }
     }
 }
