@@ -187,7 +187,6 @@ public class LinkedTaskListImpl extends AbstractTaskList {
             throw new RuntimeException();
         } else {
             Stream.Builder<Task> streamBuilder = Stream.builder();
-
             for (Task task : this) {
                 streamBuilder.accept(task);
             }
